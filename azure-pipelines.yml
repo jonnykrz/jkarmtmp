@@ -1,0 +1,25 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: AzureResourceManagerTemplateDeployment@3
+  inputs:
+    deploymentScope: 'Resource Group'
+    azureResourceManagerConnection: 'devop-service-conn'
+    subscriptionId: 'cf77ed0f-0696-473a-bfa2-a549ba17bae1'
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: 'jkarmtmp-rg'
+    location: 'West US 2'
+    templateLocation: 'Linked artifact'
+    csmFile: 'https://raw.githubusercontent.com/jonnykrz/jkarmtmp/master/CreateWebApp/azuredeploy.json'
+    overrideParameters: '-projectName jkarmtmp'
+    deploymentMode: 'Incremental'
+    deploymentName: 'DeployPipelineTemplate'
